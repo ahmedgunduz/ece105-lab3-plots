@@ -134,3 +134,69 @@ def plot_histogram(sensor_a, sensor_b, ax):
     ax.set_ylabel('Frequency')
     ax.set_title('Overlaid Histograms of Sensor Temperature Distributions')
     ax.legend()
+
+# Create plot_boxplot(sensor_a, sensor_b, ax) that draws
+# the box plot from the notebook onto the given Axes object.
+# NumPy-style docstring. Modifies ax in place, returns None.
+
+def plot_boxplot(sensor_a, sensor_b, ax):
+    """
+    Create a side-by-side box plot of sensor temperature distributions on the given Axes.
+
+    Plots box plots for both sensors with an overall mean line.
+
+    Parameters
+    ----------
+    sensor_a : array-like
+        Temperature readings for Sensor A.
+    sensor_b : array-like
+        Temperature readings for Sensor B.
+    ax : matplotlib.axes.Axes
+        The Axes object on which to draw the box plot.
+
+    Returns
+    -------
+    None
+        Modifies the input Axes object in place.
+    """
+    ax.boxplot([sensor_a, sensor_b], labels=['Sensor A', 'Sensor B'])
+    overall_mean = np.mean(np.concatenate([sensor_a, sensor_b]))
+    ax.axhline(overall_mean, color='red', linestyle='--', linewidth=2, label=f'Overall Mean: {overall_mean:.2f}°C')
+    ax.set_ylabel('Temperature (°C)')
+    ax.set_title('Side-by-Side Box Plot of Sensor Temperature Distributions')
+    ax.legend()
+
+def main():
+    """
+    Generate sensor data and create publication-quality visualizations.
+
+    Creates synthetic temperature data from two sensors and produces
+    three plots (scatter, histogram, box plot) in a single figure,
+    then saves the figure as a PNG file.
+
+    Returns
+    -------
+    None
+    """
+    import matplotlib.pyplot as plt
+
+    # Generate data
+    timestamps, sensor_a, sensor_b = generate_data(1234)
+
+    # Create 1x3 subplot figure
+    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+
+    # Call each plot function
+    plot_scatter(sensor_a, sensor_b, timestamps, ax1)
+    plot_histogram(sensor_a, sensor_b, ax2)
+    plot_boxplot(sensor_a, sensor_b, ax3)
+
+    # Adjust layout
+    plt.tight_layout()
+
+    # Save as PNG
+    plt.savefig('sensor_analysis.png', dpi=150, bbox_inches='tight')
+    plt.close()
+
+if __name__ == '__main__':
+    main()
