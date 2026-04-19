@@ -11,6 +11,31 @@ Usage
 # Create a function generate_data(seed) that returns sensor_a, sensor_b,
 # and timestamps arrays with the same parameters as in the notebook.
 # Use NumPy-style docstring with Parameters and Returns sections.
+def generate_data(seed):
+    """
+    Generate synthetic temperature sensor readings.
+
+    Parameters
+    ----------
+    seed : int
+        Random number generator seed for reproducibility.
+
+    Returns
+    -------
+    sensor_a : numpy.ndarray
+        Temperature readings from sensor A in Celsius, shape (200,).
+    sensor_b : numpy.ndarray
+        Temperature readings from sensor B in Celsius, shape (200,).
+    timestamps : numpy.ndarray
+        Measurement timestamps in seconds, shape (200,).
+    """
+    rng = np.random.default_rng(seed=seed)
+
+    timestamps = rng.uniform(0.0, 10.0, 200)
+    sensor_a = rng.normal(25.0, 3.0, 200)
+    sensor_b = rng.normal(27.0, 4.5, 200)
+
+    return sensor_a, sensor_b, timestamps
 
 import numpy as np
 
@@ -41,3 +66,38 @@ def generate_data(seed):
     sensor_a = rng.normal(25, 3, 200)
     sensor_b = rng.normal(27, 4.5, 200)
     return timestamps, sensor_a, sensor_b
+
+# Create plot_scatter(sensor_a, sensor_b, timestamps, ax) that draws
+# the scatter plot from the notebook onto the given Axes object.
+# NumPy-style docstring. Modifies ax in place, returns None.
+
+def plot_scatter(sensor_a, sensor_b, timestamps, ax):
+    """
+    Create a scatter plot of sensor readings over time on the given Axes.
+
+    Plots temperature readings from two sensors against their timestamps,
+    using blue for Sensor A and orange for Sensor B.
+
+    Parameters
+    ----------
+    sensor_a : array-like
+        Temperature readings for Sensor A.
+    sensor_b : array-like
+        Temperature readings for Sensor B.
+    timestamps : array-like
+        Time values corresponding to the readings.
+    ax : matplotlib.axes.Axes
+        The Axes object on which to draw the scatter plot.
+
+    Returns
+    -------
+    None
+        Modifies the input Axes object in place.
+    """
+    ax.scatter(timestamps, sensor_a, color='blue', label='Sensor A', alpha=0.7)
+    ax.scatter(timestamps, sensor_b, color='orange', label='Sensor B', alpha=0.7)
+    ax.set_xlabel('Timestamp (seconds)')
+    ax.set_ylabel('Sensor Reading (°C)')
+    ax.set_title('Sensor Readings vs Time')
+    ax.legend()
+    ax.grid(True, alpha=0.3)
